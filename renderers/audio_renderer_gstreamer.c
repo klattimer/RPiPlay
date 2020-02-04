@@ -16,8 +16,8 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
- 
-#include "video_renderer.h"
+
+#include "audio_renderer.h"
 
 #include <stdlib.h>
 #include <assert.h>
@@ -26,36 +26,37 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-struct video_renderer_s {
+struct audio_renderer_s {
     logger_t *logger;
+    video_renderer_t *video_renderer;
 };
 
-video_renderer_t *video_renderer_init(logger_t *logger, background_mode_t background_mode, bool low_latency) {
-    video_renderer_t *renderer;
-    renderer = calloc(1, sizeof(video_renderer_t));
+audio_renderer_t *audio_renderer_init(logger_t *logger, video_renderer_t *video_renderer, audio_device_t device, bool low_latency) {
+    audio_renderer_t *renderer;
+    renderer = calloc(1, sizeof(audio_renderer_t));
     if (!renderer) {
         return NULL;
     }
     renderer->logger = logger;
+    renderer->video_renderer = video_renderer;
     return renderer;
 }
 
-void video_renderer_start(video_renderer_t *renderer) {
+void audio_renderer_start(audio_renderer_t *renderer) {
 }
 
-void video_renderer_render_buffer(video_renderer_t *renderer, raop_ntp_t *ntp, unsigned char* data, int data_len, uint64_t pts, int type) {
-
+void audio_renderer_render_buffer(audio_renderer_t *renderer, raop_ntp_t *ntp, unsigned char* data, int data_len, uint64_t pts) {
+    // Write this to the appropriate place in the pipeline... 
 }
 
-void video_renderer_flush(video_renderer_t *renderer) {
+void audio_renderer_set_volume(audio_renderer_t *renderer, float volume) {
 }
 
-void video_renderer_destroy(video_renderer_t *renderer) {
+void audio_renderer_flush(audio_renderer_t *renderer) {
+}
+
+void audio_renderer_destroy(audio_renderer_t *renderer) {
     if (renderer) {
         free(renderer);
     }
-}
-
-void video_renderer_update_background(video_renderer_t *renderer, int type) {
-
 }
